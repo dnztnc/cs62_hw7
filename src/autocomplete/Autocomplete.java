@@ -20,7 +20,7 @@ public class Autocomplete {
 	public Autocomplete(List<Term> terms) {
 		// sort list of terms based on natural ordering
 		this.terms=terms;
-		terms.sort(Term.byPrefixOrder(1));
+		Collections.sort(terms);
 	}
 
 	/**

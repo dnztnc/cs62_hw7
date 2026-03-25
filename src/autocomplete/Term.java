@@ -12,7 +12,9 @@ import java.util.List;
 
 public class Term implements Comparable<Term> {
 
-	// TODO: Fill any instance variables
+	// Fill any instance variables
+	private final String key;
+	private final long weight;
 
 	/**
 	 * Initializes a term with the given key and weight.
@@ -21,15 +23,17 @@ public class Term implements Comparable<Term> {
 	 * @param weight associated weight
 	 */
 	public Term(String key, long weight) {
-		// TODO: fill in constructor
+		this.key = key;
+		this.weight = weight;
 	}
 
 	/**
 	 * @return comparator ordering elements by descending weight
 	 */
 	public static Comparator<Term> byReverseWeightOrder() {
-		// TODO: implement and return appropriate comparator
-		return null;
+		return (Term t1, Term t2) -> {
+			return (Long.compare(t2.weight, t1.weight));
+		};
 	}
 
 	/**
@@ -39,8 +43,11 @@ public class Term implements Comparable<Term> {
 	 *         letters of each key
 	 */
 	public static Comparator<Term> byPrefixOrder(int r) {
-		// TODO: implement and return appropriate comparator
-		return null;
+		return (Term t1, Term t2) -> {
+			String s1 = t1.key.substring(0, Math.min(r, t1.key.length()));
+			String s2 = t2.key.substring(0, Math.min(r, t2.key.length()));
+			return s1.compareTo(s2);
+		};
 	}
 
 	/**
@@ -50,8 +57,7 @@ public class Term implements Comparable<Term> {
 	 *         lexicographically smaller, same or larger than THAT
 	 */
 	public int compareTo(Term that) {
-		// TODO: implement natural comparison
-		return 0;
+		return this.key.compareTo(that.key);
 	}
 
 	/**
@@ -59,8 +65,31 @@ public class Term implements Comparable<Term> {
 	 *         weight, followed by 2 tabs, followed by the key.
 	 **/
 	public String toString() {
-		// TODO: return appropriate string
-		return null;
+		return this.weight + "\t\t" + this.key;
 	}
+	public static void main(String[] args) {	
+		// some tests
+		Term t1 = new Term("apricot", 10);
+		Term t2 = new Term("banana", 20);
+		Term t3 = new Term("apple", 15);
+		
+		List<Term> list = new ArrayList<>();
+		list.add(t1);
+		list.add(t2);
+		list.add(t3);
+		Collections.sort(list, Term.byPrefixOrder(3));
+		System.out.println("Sorted by 3-letter prefix: " + list);
+		Collections.sort(list, Term.byPrefixOrder(2));
+		System.out.println("Sorted by 2-letter prefix: " + list);
+		Collections.sort(list, Term.byReverseWeightOrder());
+		System.out.println("Sorted by reverse weight order: " + list);
 
+		System.out.println(Term.byPrefixOrder(3).compare(t1, t3));
+		System.out.println(Term.byPrefixOrder(2).compare(t1, t3));
+
+
+		System.out.println(t1);
+
+
+	}
 }
